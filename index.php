@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +17,7 @@
       <button id="btnsearch" type="submit"><i class="fas fa-search"></i></button>
     </div>
     <div id="main">
-
+      <!-- Your main content here -->
     </div>
     <div class="weatherHistory">
       <h2>Weather History</h2>
@@ -29,40 +28,35 @@
         $password = "";
         $dbname = "weather";
 
-
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
 
-        // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
 
-          $sql = "SELECT * FROM weather_data ORDER BY current_day_and_date DESC LIMIT 7";
-          $result = $conn->query($sql);
+        $sql = "SELECT * FROM weather_data ORDER BY current_day_and_date DESC LIMIT 7";
+        $result = $conn->query($sql);
 
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo '<div class="">' . $row['current_day_and_date'] . '</div>';
+                echo '<div class="text-2xl text-blue-600">' . $row['temperature'] . '°C</div>';
+            }
+        }
 
-          if ($result->num_rows > 0) {
-              while ($row = $result->fetch_assoc()) {
-                  echo '<div class=" ">';
-                  echo '<" ">' . $row['current_day_and_date'] . '</div>';
-                  echo '<div class="text-2xl text-blue-600">' . $row['temperature'] . '°C</div>';
-                  echo '</div>';
-              }
-          }
-
-          $conn->close();
-          ?>
-      <!-- Forecast data will be inserted here dynamically -->
+        $conn->close();
+      ?>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" integrity="sha512-CryKbMe7sjSCDPl18jtJI5DR5jtkUWxPXWaLCst6QjH8wxDexfRJic2WRmRXmstr2Y8SxDDWuBO6CQC6IE4KTA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="script.js"></script>
 </body>
 </html>
+
 <?php
-$apiKey = "116ac04a9a45a0546f051907feb5c62c";
-$city = "Southampton"; 
+$apiKey = "YOUR_API_KEY"; // Replace with your API key
+$city = "Southampton";
 $apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}";
 
 $curl = curl_init($apiUrl);
@@ -74,7 +68,7 @@ if ($apiResponse === false) {
     curl_close($curl);
     exit();
 }
-    curl_close($curl);
+curl_close($curl);
 
 $weatherData = json_decode($apiResponse, true);
 
@@ -86,19 +80,12 @@ if ($weatherData['cod'] === 200) {
     $windSpeed = $weatherData['wind']['speed'];
     $humidity = $weatherData['main']['humidity'];
     $icon = $weatherData['weather'][0]['icon'];
-}
-    // Your database connection code
-    $servername = "localhost";
-    $username = "root"; // Your MySQL username
-    $password = "";     // Your MySQL password
-    $database = "weather"; // Your database name
 
-    $conn = new mysqli($servername, $username, $password, $database);
+    $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Check if data already exists for today
     $checkSql = "SELECT * FROM weather_data WHERE current_day_and_date = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("s", $currentDate);
@@ -106,11 +93,12 @@ if ($weatherData['cod'] === 200) {
     $checkResult = $checkStmt->get_result();
 
     if ($checkResult->num_rows === 0) {
-        // Prepare the SQL statement for inserting new data
         $insertSql = "INSERT INTO weather_data (city, temperature, description, current_day_and_date, pressure, wind_speed, humidity, icon) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $insertStmt = $conn->prepare($insertSql);
         $insertStmt->bind_param("ssssssss", $city, $temperature, $description, $currentDate, $pressure, $windSpeed, $humidity, $icon);
-    
+
+        $insertStmt->execute();
+    }
+    $conn->close();
 }
 ?>
-    
