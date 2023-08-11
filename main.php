@@ -20,7 +20,7 @@
       <!-- Your main content here -->
     </div>
     <div class="weatherHistory">
-      <h2>Weather History</h2>
+      <h2 class="font">Weather History</h2>
       
       <?php
         $servername = "localhost";
@@ -44,15 +44,18 @@
           echo "Error executing query: " . $conn->error;
         }
         elseif($result->num_rows > 0) {
+          echo '<div class="weather-history">';
+            
             while ($row = $result->fetch_assoc()) {
-                
-                echo '<div class="icon"><img src="http://openweathermap.org/img/w/' . $row['icon'] . '.png" alt="Weather Icon"></div>';
-                echo '<div class="weather-day">' . $row['currentDate'] . '</div>';
+                echo '<div class="weather-ins">';
+                echo '<div class="icon" style="padding-left:15px;"><img src="http://openweathermap.org/img/w/' . $row['icon'] . '.png" alt="Weather Icon"></div>';
                 echo '<div class="temperature">' . $row['temperature'] . '°C</div>';
-                
+                echo '<div class="weather-day">' . $row['currentDate'] . '<br></div>';
+                echo '</div>';
 
-                
+               
             }
+            echo '</div>';
         } else {
             echo "No weather data available.";
         }
