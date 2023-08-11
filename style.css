@@ -125,5 +125,39 @@ img {
 } */
 #current-day-and-date{
   font-size: 11px;
+  font-style: italic;
+  margin-bottom: 5px;
+  color: rgb(255, 255, 255);
+  font-style: bold;
 } 
+
+/* add */
+.forecast {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Add this line to allow wrapping */
+  margin-top: 20px;
+}
+
+.forecast-day {
+  text-align: center;
+  width: calc(14.28% - 20px); /* Adjust width for each day */
+  box-sizing: border-box;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f7f7f7;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.forecast-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.forecast-temperature {
+  font-size: 12px;
+}
 
