@@ -49,9 +49,11 @@
             while ($row = $result->fetch_assoc()) {
                 echo '<div class="weather-ins">';
                 echo '<div class="icon" style="padding-left:15px;"><img src="http://openweathermap.org/img/w/' . $row['icon'] . '.png" alt="Weather Icon"></div>';
+                echo '<div class="weather-description">' . $row['description'] . '</div>'; // Displaying weather description
                 echo '<div class="temperature">' . $row['temperature'] . '°C</div>';
-                
                 echo '<div class="weather-day">' . $row['currentDate'] . '<br></div>';
+                
+
                 echo '</div>';
 
                
