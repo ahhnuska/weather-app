@@ -137,6 +137,7 @@ img {
   justify-content: space-between;
   flex-wrap: wrap; /* Add this line to allow wrapping */
   margin-top: 20px;
+  
 }
 
 .forecast-day {
@@ -148,6 +149,7 @@ img {
   background-color: #f7f7f7;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
 }
 
 .forecast-icon {
@@ -159,5 +161,81 @@ img {
 
 .forecast-temperature {
   font-size: 12px;
+}
+
+.weather-day {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.temperature {
+  font-size: 24px;
+  color: #3498db; /* Blue color */
+}
+.font{
+  text-align: center;
+  letter-spacing: 3px;
+}
+.weather-ins{
+
+  margin: 6px;
+  margin-right: 9px;
+  padding: 10px;
+  padding-right: 16px;
+  border: 1px solid black;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.weather-history {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+  
+
+}
+
+.weather-card {
+  width: calc(33.33% - 20px);
+  margin: 10px 5px 5px 10px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.weather-description {
+  text-align: center;
+  font-size: 10px;
+  margin: -3px;
+  margin-top: -10px;
+  margin-bottom: 2px;
+  padding-left: 9px;
+  font-style: italic;
+  color: rgb(102, 99, 99);
+}
+.weather-icon img {
+  width: 50px;
+  height: 50px;
+  padding-left: 15px;
+  text-align: center;
+}
+
+.temperature {
+  font-size: 18px;
+  margin-bottom: 6px;
+  padding-left: 15px;
+}
+
+.weather-day {
+  font-size: 11px;
+  font-style: italic;
+  color: rgba(16, 61, 59, 0.416);
+  margin-left: 10px;
+  text-align: center;
 }
 
