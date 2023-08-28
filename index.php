@@ -23,11 +23,55 @@ function getWeatherData($cityName)
 {
     global $Api;
 
-    $url = "https://api.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=$Api";
-    $response = file_get_contents($url);
+    $url = "https://ai.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=$Api";
+    $response = @file_get_contents($url);
 
     if ($response !== false) {
         return json_decode($response, true);
+    } else {
+        echo "print no internet connection";
+        $response = false;
+
+        ?>
+        <div id="main">
+            <div class="outside">
+                <div class="search-container">
+                    <form id="searchForm" method="post">
+                        <input type="text" id="searchBar" placeholder="Enter the name of the city..." name="city">
+                        <button id="btnsearch" type="submit">Search</button>
+                    </form>
+                </div>
+                <img id="weatherIcon" src="" alt="Weather Icon">
+                <div class="des" id="weatherDescription"></div>
+                <div class="weather-info.country" id="cityName"></div>
+                <div><b id="temperature"></b></div>
+                <div class="descriptionBox">
+                    <div id="current-day-and-date"></div>
+                    <div class="weather-info" id="pressure"></div>
+                    <div class="weather-info" id="windSpeed"></div>
+                    <div class="weather-info" id="humidity"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var storedWeatherData = JSON.parse(localStorage.getItem(<?php echo json_encode($cityName); ?>));
+
+            if (storedWeatherData) {
+                document.getElementById("weatherIcon").src = "http://openweathermap.org/img/w/" + storedWeatherData.weather[0].icon + ".png";
+                document.getElementById("weatherDescription").textContent = storedWeatherData.weather[0].description;
+                document.getElementById("cityName").textContent = storedWeatherData.name;
+                document.getElementById("temperature").textContent = storedWeatherData.main.temp + "°C";
+                document.getElementById("current-day-and-date").textContent = storedWeatherData.formattedDate; // Assuming you have a formatted date in the storedWeatherData
+                document.getElementById("pressure").textContent = "Pressure: " + storedWeatherData.main.pressure + "MBar";
+                document.getElementById("windSpeed").textContent = "Windspeed: " + storedWeatherData.wind.speed + "m/s";
+                document.getElementById("humidity").textContent = "Humidity: " + storedWeatherData.main.humidity + "%";
+            } else {
+                // Display an error message or handle the absence of storedWeatherData as needed
+                console.log("Error! No stored weather data available!");
+            }
+        </script>
+        <?php
     }
 
     return null;
@@ -78,6 +122,13 @@ if (isset($_POST['city'])) {
         echo "Error! The name of the city is invalid!";
         exit;
     }
+    ?>
+    <script>
+        var weatherData = <?php echo json_encode($weatherData); ?>;
+        var city = <?php echo json_encode($cityName); ?>;
+        localStorage.setItem(city, JSON.stringify(weatherData));
+    </script>
+    <?php
     saveWeatherData($weatherData);
 } else {
     // Fetch default weather data
@@ -86,6 +137,13 @@ if (isset($_POST['city'])) {
         echo "Error! Default city data not available!";
         exit;
     }
+    ?>
+    <script>
+        var weatherData = <?php echo json_encode($weatherData); ?>;
+        var city = <?php echo json_encode($cityName); ?>;
+        localStorage.setItem(city, JSON.stringify(weatherData));
+    </script>
+    <?php
     saveWeatherData($weatherData);
 }
 ?>
